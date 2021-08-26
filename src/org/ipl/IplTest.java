@@ -7,5 +7,8 @@ public class IplTest {
         MatchesServices matchesServices = new MatchesServices();
         int noOfMatches = matchesServices.getNumberOfMatchesPlayedPerYear(2017);
         System.out.println("Number of matches played per year: " + noOfMatches);
+        int noOfWonMatches = matchesServices.getNumberOfMatchesWonOfAllTeamsOverAllYear();
+        System.out.println("Number of matches won of all teams over all the years: " + noOfWonMatches);
+
     }
 }
