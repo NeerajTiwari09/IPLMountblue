@@ -2,6 +2,7 @@ package org.ipl.services;
 
 import org.ipl.dao.DaoConnector;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,14 +21,22 @@ public class MatchesServices {
         return count;
     }
 
-    public int getNumberOfMatchesWonOfAllTeamsOverAllYear(){
+    public Map<String, Integer> getNumberOfMatchesWonOfAllTeamsOverAllYear(){
         List<Map<String, String>> listOfMatches = dao.getDataFromMatchesCsv();
+        Map<String, Integer> teamMap = new HashMap<>();
         int count = 0;
         for (Map<String, String> map : listOfMatches) {
             if(!map.get("result").equals( "no result")) {
-                count += 1;
+                String teamName = map.get("winner");
+                if(!teamMap.containsKey(map.get("winner"))){
+                    teamMap.put(teamName,1);
+                }
+                else {
+                    teamMap.put(map.get("winner"),teamMap.get(teamName)+1);
+                }
             }
         }
-        return count;
+//        System.out.println(teamMap);
+        return teamMap;
     }
 }
