@@ -7,14 +7,23 @@ public class DaoConnector {
 
 //    private List<Map<String, String>> matchesData;
 //    private List<Map<String, String>> deliveriesData;
-
+    private static DaoConnector dao;
+    private DaoConnector(){
+        // private constructor
+    }
+    public static DaoConnector getInstance(){
+        if(dao == null){
+            return new DaoConnector();
+        }
+        return dao;
+    }
     public List<Map<String, String>> getDataFromMatchesCsv(){
 
         List<Map<String, String>> listOfMatches = new ArrayList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader("matches.csv"));
             String[] headings = br.readLine().split(",");
-            String line = "";
+            String line ;
             while ((line = br.readLine()) != null){
                 String[] row = line.split(",");
                 Map<String, String> map = new HashMap<>();
