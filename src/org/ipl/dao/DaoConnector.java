@@ -21,7 +21,7 @@ public class DaoConnector {
 
         List<Map<String, String>> listOfMatches = new ArrayList<>();
         try {
-            BufferedReader br = new BufferedReader(new FileReader("matches.csv"));
+            BufferedReader br = new BufferedReader(new FileReader("./csv-files/matches.csv"));
             String[] headings = br.readLine().split(",");
             String line ;
             while ((line = br.readLine()) != null){
@@ -45,7 +45,7 @@ public class DaoConnector {
     public List<Map<String, String>> getDataFromDeliveriesCsv(){
         List<Map<String, String>> listOfDeliveries = new ArrayList<>();
         try {
-            BufferedReader br = new BufferedReader(new FileReader("deliveries.csv"));
+            BufferedReader br = new BufferedReader(new FileReader("./csv-files/deliveries.csv"));
             String[] headings = br.readLine().split(",");
             String line ;
             while((line = br.readLine()) != null){
