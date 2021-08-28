@@ -70,11 +70,14 @@ public class DeliveryService {
 
     private Map<String, Float> getTheTopEconomicalBowlers(Map<String, Integer> bowlerRunsMap, Map<String, Integer> totalBalls, List<String> listOfBowers){
         Map<String, Float> topEconomicBowlers = new HashMap<>();
+        // TODO- use merge() and apply (v1/v2)*6 (need to change totalBalls into Map<String, Float>);
+        //no need of another list ie List<String>
+//        bowlerRunsMap.forEach((key, value) ->
+//                totalBalls.merge(key, value, (v1, v2) -> ((v2 / v1))*6));
+//        System.out.println(totalBalls);
         for(String bName : listOfBowers){
-            float rate = ((float)bowlerRunsMap.get(bName) / (float)totalBalls.get(bName))*6;
+            float rate = ((float)bowlerRunsMap.get(bName) / totalBalls.get(bName))*6;
             topEconomicBowlers.put(bName, rate);
-//            System.out.println(topEconomicBowlers);
-
         }
         return topEconomicBowlers;
     }
