@@ -7,52 +7,59 @@ import java.util.*;
 public class MatchService {
     private DaoConnector dao = DaoConnector.getInstance();
 
-    public Map<String, Integer> getNumberOfMatchesPlayedPerYear(){
+    public Map<Integer, Integer> getNumberOfMatchesPlayedPerYear(){
 //        DaoConnector dao = DaoConnector.getInstance();
-        int count = 0;
         List<Map<String, String>> listOfMatches = dao.getDataFromMatchesCsv();
-        Map<String, Integer> perYearMatchMap = new HashMap<>();
+        Map<Integer, Integer> matchesByYear = new HashMap<>();
         for (Map<String, String> map : listOfMatches) {
-            String year = map.get("season");
-            if(!perYearMatchMap.containsKey(year)){
-                perYearMatchMap.put(year, 1);
+            int year = Integer.parseInt(map.get("season"));
+            if(!matchesByYear.containsKey(year)){
+                matchesByYear.put(year, 1);
             }
             else{
-               perYearMatchMap.put(year, perYearMatchMap.get(year)+1);
+               matchesByYear.put(year, matchesByYear.get(year)+1);
             }
         }
-        return perYearMatchMap;
+        return matchesByYear;
     }
 
     public Map<String, Integer> getNumberOfMatchesWonOfAllTeamsOverAllYear(){
 //        DaoConnector dao = DaoConnector.getInstance();
         List<Map<String, String>> listOfMatches = dao.getDataFromMatchesCsv();
-        Map<String, Integer> perTeamWinMap = new HashMap<>();
-        int count = 0;
+        Map<String, Integer> matchesWinByYear = new HashMap<>();
         for (Map<String, String> map : listOfMatches) {
             if(!map.get("result").equals( "no result")) {
                 String teamName = map.get("winner");
-                if(!perTeamWinMap.containsKey(map.get("winner"))){
-                    perTeamWinMap.put(teamName,1);
+                if(!matchesWinByYear.containsKey(teamName)){
+                    matchesWinByYear.put(teamName,1);
                 }
                 else {
-                    perTeamWinMap.put(teamName,perTeamWinMap.get(teamName)+1);
+                    matchesWinByYear.put(teamName,matchesWinByYear.get(teamName)+1);
                 }
             }
         }
-        return perTeamWinMap;
+        return matchesWinByYear;
     }
 
     public Set<String> getVenueOfAllMatchesInYear(int year){
         List<Map<String, String>> listMatches = dao.getDataFromMatchesCsv();
-        Set<String> venuesSet = new HashSet<>();
+        Set<String> venueSet = new HashSet<>();
         for(Map<String, String> map : listMatches){
             if(Integer.valueOf(map.get("season")).equals(year)) {
-                venuesSet.add(map.get("venue"));
+                venueSet.add(map.get("venue"));
             }
         }
-        return  venuesSet;
+        return  venueSet;
     }
 
-
+    public int  getAllMatchesOfOneTeam(int year, String teamName){
+        List<Map<String, String>> listMatch = dao.getDataFromMatchesCsv();
+        int count = 0;
+        for(Map<String, String> map : listMatch){
+            if(Integer.valueOf(map.get("season")).equals(year) && (map.get("team1").equals(teamName) || map.get("team2").equals(teamName))) {
+                count += 1;
+            }
+        }
+        return count;
+    }
 }

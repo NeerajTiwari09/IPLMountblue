@@ -17,6 +17,7 @@ public class DaoConnector {
         }
         return dao;
     }
+
     public List<Map<String, String>> getDataFromMatchesCsv(){
 
         List<Map<String, String>> listOfMatches = new ArrayList<>();
@@ -53,7 +54,6 @@ public class DaoConnector {
                 Map<String, String> map = new HashMap<>();
                 for(int i = 0; i < row.length; i++){
                     map.put(headings[i],row[i]);
-//                    System.out.println(headings[i]+" : "+row[i]+" ");
                 }
                 listOfDeliveries.add(map);
             }
@@ -66,5 +66,4 @@ public class DaoConnector {
         }
         return  listOfDeliveries;
     }
-
 }

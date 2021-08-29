@@ -10,14 +10,13 @@ import java.util.Map;
 public class DeliveryService {
     private DaoConnector dao = DaoConnector.getInstance();
 
-    private List<Integer> getMatchId(List<Map<String, String>> listMatch, int year) {
+    private synchronized List<Integer> getMatchId(List<Map<String, String>> listMatch, int year) {
         List<Integer> idList = new ArrayList<>();
         for (Map<String, String> matchMap : listMatch) {
             if (Integer.valueOf(matchMap.get("season")).equals(year)) {
                 idList.add(Integer.valueOf(matchMap.get("id")));
             }
         }
-//        System.out.println(idList);
         return idList;
     }
 
@@ -26,7 +25,6 @@ public class DeliveryService {
         List<Map<String, String>> listDelivery = dao.getDataFromDeliveriesCsv();
         List<Integer> idList = getMatchId(listMatch, year);
         Map<String, Integer> teamGotExtraRunMap = new HashMap<>();
-//        Integer[] idList = new Integer[]{629,619,612,626,579,583,586,589,594,622,597,604,608,615};
         for (Integer i : idList) {
             for (Map<String, String> map : listDelivery) {
                 if (Integer.valueOf(map.get("match_id")).equals(i)) {
@@ -39,7 +37,6 @@ public class DeliveryService {
                 }
             }
         }
-//        System.out.println(teamGotExtraRunMap);
         return teamGotExtraRunMap;
     }
 
@@ -47,7 +44,7 @@ public class DeliveryService {
         List<Map<String, String>> listMatch = dao.getDataFromMatchesCsv();
         List<Map<String, String>> listDelivery = dao.getDataFromDeliveriesCsv();
         List<Integer> idList = getMatchId(listMatch, year);
-        Map<String, Integer> totalBalls = new HashMap<>();
+        Map<String, Integer> ballsByBowler = new HashMap<>();
         List<String> name = new ArrayList<>();
         Map<String, Integer> bowlerRunsMap = new HashMap<>();
         for (Integer i : idList) {
@@ -56,61 +53,63 @@ public class DeliveryService {
                     String bowlerName = map.get("bowler");
                     if (!bowlerRunsMap.containsKey(bowlerName)) {
                         bowlerRunsMap.put(bowlerName, Integer.valueOf(map.get("total_runs")));
-                        totalBalls.put(bowlerName, 1);
+                        ballsByBowler.put(bowlerName, 1);
                         name.add(bowlerName);
                     } else {
                         bowlerRunsMap.put(bowlerName, bowlerRunsMap.get(bowlerName) + Integer.valueOf(map.get("total_runs")));
-                        totalBalls.put(bowlerName, totalBalls.get(bowlerName)+1);
+                        ballsByBowler.put(bowlerName, ballsByBowler.get(bowlerName)+1);
                     }
                 }
             }
         }
-//        System.out.println(bowlerRunsMap);
-//        System.out.println(totalBalls);
-        return getTheTopEconomicalPlayer(bowlerRunsMap, totalBalls, name);
+        return getTheTopEconomicalBowler(bowlerRunsMap, ballsByBowler, name);
     }
 
-    private Map<String, Float> getTheTopEconomicalPlayer(Map<String, Integer> playerRunsMap, Map<String, Integer> totalBalls, List<String> listOfBowers){
+    private Map<String, Float> getTheTopEconomicalBowler(Map<String, Integer> runsByBowler, Map<String, Integer> ballsByBowler, List<String> listOfBowlers){
+        Map<String, Float> economyByBowler = new HashMap<>();
+        // TODO- use merge() and apply (v1/v2)*6 (need to change ballsByBowler into Map<String, Float>);
+       /* no need of another list ie List<String>
+        runsByBowler.forEach((key, value) -> ballsByBowler.merge(key, value, (v1, v2) -> ((v2 / v1))*6));
+        */
+        for(String bName : listOfBowlers){
+            float rate = ((float)runsByBowler.get(bName) / ballsByBowler.get(bName))*6;
+            economyByBowler.put(bName, rate);
+        }
+        return economyByBowler;
+    }
+
+    private Map<String, Float> getStrikeRateByBatsman(Map<String, Integer> runByBatsman, Map<String, Integer> ballsByBatsman, List<String> listOfBatsman){
         Map<String, Float> topEconomicBowlers = new HashMap<>();
-        // TODO- use merge() and apply (v1/v2)*6 (need to change totalBalls into Map<String, Float>);
-        //no need of another list ie List<String>
-//        playerRunsMap.forEach((key, value) ->
-//                totalBalls.merge(key, value, (v1, v2) -> ((v2 / v1))*6));
-//        System.out.println(totalBalls);
-        for(String bName : listOfBowers){
-            float rate = ((float)playerRunsMap.get(bName) / totalBalls.get(bName))*6;
-            topEconomicBowlers.put(bName, rate);
+        for(String bowlerName : listOfBatsman){
+            float rate = ((float)runByBatsman.get(bowlerName) / ballsByBatsman.get(bowlerName))*100;
+            topEconomicBowlers.put(bowlerName, rate);
         }
         return topEconomicBowlers;
     }
 
-    public Map<String, Float> getTopEconomicalBatsMan(int year) {
+    public Map<String, Float> getTheTopStrikeRateByBatsman(int year) {
         List<Map<String, String>> listMatch = dao.getDataFromMatchesCsv();
         List<Map<String, String>> listDelivery = dao.getDataFromDeliveriesCsv();
         List<Integer> idList = getMatchId(listMatch, year);
-        Map<String, Integer> totalBalls = new HashMap<>();
-        List<String> name = new ArrayList<>();
-        Map<String, Integer> batsmanRunsMap = new HashMap<>();
+        Map<String, Integer> ballsByBatsman = new HashMap<>();
+        List<String> listOfBatsman = new ArrayList<>();
+        Map<String, Integer> runByBatsman = new HashMap<>();
+        //  TODO - needs optimization here
         for (Integer i : idList) {
-            for (Map<String, String> map : listDelivery) { //  TODO - needs optimization here
+            for (Map<String, String> map : listDelivery) {
                 if (Integer.valueOf(map.get("match_id")).equals(i)) {
                     String batsmanName = map.get("batsman");
-                    if (!batsmanRunsMap.containsKey(batsmanName)) {
-                        batsmanRunsMap.put(batsmanName, Integer.valueOf(map.get("total_runs")));
-                        totalBalls.put(batsmanName, 1);
-                        name.add(batsmanName);
+                    if (!runByBatsman.containsKey(batsmanName)) {
+                        runByBatsman.put(batsmanName, Integer.valueOf(map.get("total_runs")));
+                        ballsByBatsman.put(batsmanName, 1);
+                        listOfBatsman.add(batsmanName);
                     } else {
-                        batsmanRunsMap.put(batsmanName, batsmanRunsMap.get(batsmanName) + Integer.valueOf(map.get("total_runs")));
-                        totalBalls.put(batsmanName, totalBalls.get(batsmanName) + 1);
+                        runByBatsman.put(batsmanName, runByBatsman.get(batsmanName) + Integer.valueOf(map.get("total_runs")));
+                        ballsByBatsman.put(batsmanName, ballsByBatsman.get(batsmanName) + 1);
                     }
                 }
             }
         }
-
-//        System.out.println(batsmanRunsMap);
-        return getTheTopEconomicalPlayer(batsmanRunsMap, totalBalls, name);
+        return getStrikeRateByBatsman(runByBatsman, ballsByBatsman, listOfBatsman);
     }
-
-
-
 }
