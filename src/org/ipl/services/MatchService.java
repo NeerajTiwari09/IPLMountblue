@@ -2,9 +2,7 @@ package org.ipl.services;
 
 import org.ipl.dao.DaoConnector;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MatchService {
     private DaoConnector dao = DaoConnector.getInstance();
@@ -43,5 +41,14 @@ public class MatchService {
             }
         }
         return perTeamWinMap;
+    }
+
+    public Set<String> getVenueOfAllMatchesInYear(int year){
+        List<Map<String, String>> listMatches = dao.getDataFromMatchesCsv();
+        Set<String> venuesSet = new HashSet<>();
+        for(Map<String, String> map : listMatches){
+            venuesSet.add(map.get("venue"));
+        }
+        return  venuesSet;
     }
 }
