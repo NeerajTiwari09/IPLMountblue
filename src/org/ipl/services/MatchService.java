@@ -47,8 +47,12 @@ public class MatchService {
         List<Map<String, String>> listMatches = dao.getDataFromMatchesCsv();
         Set<String> venuesSet = new HashSet<>();
         for(Map<String, String> map : listMatches){
-            venuesSet.add(map.get("venue"));
+            if(Integer.valueOf(map.get("season")).equals(year)) {
+                venuesSet.add(map.get("venue"));
+            }
         }
         return  venuesSet;
     }
+
+
 }
