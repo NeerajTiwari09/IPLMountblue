@@ -1,6 +1,5 @@
 package org.ipl.services;
 
-import org.ipl.dao.DaoConnector;
 import org.ipl.model.Delivery;
 import org.ipl.model.Match;
 
@@ -36,7 +35,7 @@ public class DeliveryService {
         return extraRunByTeam;
     }
 
-    public Map<String, Float> getTheTopEconomicalBowlers(List<Match> matches, List<Delivery> deliveries, int year) {
+    public SortedSet<Map.Entry<String, Float>> getTheTopEconomicalBowlers(List<Match> matches, List<Delivery> deliveries, int year) {
         List<Integer> matchIds = getMatchId(matches, year);
         Map<String, Integer> ballsByBowler = new HashMap<>();
         List<String> name = new ArrayList<>();
@@ -60,19 +59,33 @@ public class DeliveryService {
         return getTheTopEconomicalBowler(runsByBowler, ballsByBowler, name);
     }
 
-    private Map<String, Float> getTheTopEconomicalBowler(Map<String, Integer> runsByBowler, Map<String, Integer> ballsByBowler, List<String> listOfBowlers){
+    private SortedSet<Map.Entry<String, Float>>  getTheTopEconomicalBowler(Map<String, Integer> runsByBowler, Map<String, Integer> ballsByBowler, List<String> listOfBowlers){
         Map<String, Float> economyByBowler = new TreeMap<>();
         // TODO- use merge() and apply (v1/v2)*6 (need to change ballsByBowler into Map<String, Float>);
        /* no need of another list ie List<String>
         runsByBowler.forEach((key, value) -> ballsByBowler.merge(key, value, (v1, v2) -> ((v2 / v1))*6));
         */
         for(String bName : listOfBowlers){
-            float rate = ((float)runsByBowler.get(bName) / ballsByBowler.get(bName))*6;
+            float rate = ((float)runsByBowler.get(bName) / ballsByBowler.get(bName)) * 6;
             economyByBowler.put(bName, rate);
         }
-        return economyByBowler;
+        SortedSet<Map.Entry<String, Float>> sortedEconomicByBowler = economyRateByValues(economyByBowler);
+        return sortedEconomicByBowler;
     }
 
+    static <K,V extends Comparable<? super V>>
+    SortedSet<Map.Entry<K,V>> economyRateByValues(Map<K,V> map) {
+        SortedSet<Map.Entry<K,V>> sortedEntries = new TreeSet<Map.Entry<K,V>>(
+                new Comparator<Map.Entry<K,V>>() {
+                    @Override public int compare(Map.Entry<K,V> e1, Map.Entry<K,V> e2) {
+                        int res = e1.getValue().compareTo(e2.getValue());
+                        return res != 0 ? res : 1;
+                    }
+                }
+        );
+        sortedEntries.addAll(map.entrySet());
+        return sortedEntries;
+    }
 
 
     private SortedSet<Map.Entry<String, Float>> getStrikeRateByBatsman(Map<String, Integer> runByBatsman, Map<String, Integer> ballsByBatsman, List<String> listOfBatsman){

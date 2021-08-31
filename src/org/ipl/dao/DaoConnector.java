@@ -1,5 +1,6 @@
 package org.ipl.dao;
 
+import org.ipl.IplTest;
 import org.ipl.model.Delivery;
 import org.ipl.model.Match;
 
@@ -91,6 +92,7 @@ public class DaoConnector {
                 match.setUmpire2(data[MATCH_UMPIRE2]);
 //                match.setUmpire3(data[MATCH_UMPIRE3]);
                 matches.add(match);
+
             }
         }
         catch(FileNotFoundException e){
@@ -106,7 +108,7 @@ public class DaoConnector {
         List<Delivery> deliveries = new ArrayList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader("./csv-files/deliveries.csv"));
-            String[] headings = br.readLine().split(",");
+            String[] heading = br.readLine().split(",");
             String line ;
             while((line = br.readLine()) != null){
                 String[] data = line.split(",");
@@ -129,10 +131,17 @@ public class DaoConnector {
                 delivery.setBatsmanRun(Integer.valueOf(data[DELIVERY_BATSMAN_RUN]));
                 delivery.setExtraRun(Integer.valueOf(data[DELIVERY_EXTRA_RUN]));
                 delivery.setTotalRun(Integer.valueOf(data[DELIVERY_TOTAL_RUN]));
-                
-//                delivery.setPlayerDismissed(data[DELIVERY_PLAYER_DISMISSED]);
-//                delivery.setDismissalKind(data[DELIVERY_DISMISSAL_KIND]);
-//                delivery.setFielder(data[DELIVERY_FIELDER]);
+                if(data.length > 18) {
+                    delivery.setPlayerDismissed(data[DELIVERY_PLAYER_DISMISSED]);
+                }
+                if (data.length > 19) {
+                    delivery.setDismissalKind(data[DELIVERY_DISMISSAL_KIND]);
+                }
+                if(data.length > 20){
+                    delivery.setFielder(data[DELIVERY_FIELDER]);
+                }
+//              System.out.println(data.length);
+
                 deliveries.add(delivery);
             }
         }
