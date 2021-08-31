@@ -1,18 +1,14 @@
 package org.ipl.services;
 
-import org.ipl.dao.DaoConnector;
+import org.ipl.model.Match;
 
 import java.util.*;
 
 public class MatchService {
-    private DaoConnector dao = DaoConnector.getInstance();
-
-    public Map<Integer, Integer> getNumberOfMatchesPlayedPerYear(){
-//        DaoConnector dao = DaoConnector.getInstance();
-        List<Map<String, String>> listOfMatches = dao.getDataFromMatchesCsv();
+    public Map<Integer, Integer> getNumberOfMatchesPlayedPerYear(List<Match> matches){
         Map<Integer, Integer> matchesByYear = new HashMap<>();
-        for (Map<String, String> map : listOfMatches) {
-            int year = Integer.parseInt(map.get("season"));
+        for (Match match : matches) {
+            int year = Integer.parseInt(match.getSeason());
             if(!matchesByYear.containsKey(year)){
                 matchesByYear.put(year, 1);
             }
@@ -23,13 +19,11 @@ public class MatchService {
         return matchesByYear;
     }
 
-    public Map<String, Integer> getNumberOfMatchesWonOfAllTeamsOverAllYear(){
-//        DaoConnector dao = DaoConnector.getInstance();
-        List<Map<String, String>> listOfMatches = dao.getDataFromMatchesCsv();
+    public Map<String, Integer> getNumberOfMatchesWonOfAllTeamsOverAllYear(List<Match> matches){
         Map<String, Integer> matchesWinByYear = new HashMap<>();
-        for (Map<String, String> map : listOfMatches) {
-            if(!map.get("result").equals( "no result")) {
-                String teamName = map.get("winner");
+        for (Match match : matches) {
+            if(!match.getResult().equals( "no result")) {
+                String teamName = match.getWinner();
                 if(!matchesWinByYear.containsKey(teamName)){
                     matchesWinByYear.put(teamName,1);
                 }
@@ -41,22 +35,20 @@ public class MatchService {
         return matchesWinByYear;
     }
 
-    public Set<String> getVenueOfAllMatchesInYear(int year){
-        List<Map<String, String>> listMatches = dao.getDataFromMatchesCsv();
+    public Set<String> getVenueOfAllMatchesInYear(List<Match> matches, int year){
         Set<String> venueSet = new HashSet<>();
-        for(Map<String, String> map : listMatches){
-            if(Integer.valueOf(map.get("season")).equals(year)) {
-                venueSet.add(map.get("venue"));
+        for(Match match : matches){
+            if(Integer.valueOf(match.getSeason()).equals(year)) {
+                venueSet.add(match.getVenue());
             }
         }
         return  venueSet;
     }
 
-    public int  getAllMatchesOfOneTeam(int year, String teamName){
-        List<Map<String, String>> listMatch = dao.getDataFromMatchesCsv();
+    public int  getAllMatchesOfOneTeam(List<Match> matches, int year, String teamName){
         int count = 0;
-        for(Map<String, String> map : listMatch){
-            if(Integer.valueOf(map.get("season")).equals(year) && (map.get("team1").equals(teamName) || map.get("team2").equals(teamName))) {
+        for(Match match : matches){
+            if(Integer.valueOf(match.getSeason()).equals(year) && (match.getTeam1().equals(teamName) || match.getTeam2().equals(teamName))) {
                 count += 1;
             }
         }
