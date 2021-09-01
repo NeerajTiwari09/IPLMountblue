@@ -1,6 +1,5 @@
 package org.ipl.dao;
 
-import org.ipl.IplTest;
 import org.ipl.model.Delivery;
 import org.ipl.model.Match;
 
@@ -84,15 +83,14 @@ public class DaoConnector {
                 match.setResult(data[MATCH_RESULT]);
                 match.setDlApplied(Integer.valueOf(data[MATCH_DL_APPLIED]));
                 match.setWinner(data[MATCH_WINNER]);
-                match.setWinByRuns(Integer.valueOf(data[MATCH_WIN_BY_RUNS]));
-                match.setWinByWickets(Integer.valueOf(data[MATCH_WIN_BY_WICKETS]));
-                match.setPlayerOfMatch(data[MATCH_PLAYER_OF_MATCH]);
-                match.setVenue(data[MATCH_VENUE]);
-                match.setUmpire1(data[MATCH_UMPIRE1]);
-                match.setUmpire2(data[MATCH_UMPIRE2]);
+//                match.setWinByRuns(Integer.valueOf(data[MATCH_WIN_BY_RUNS]));
+//                match.setWinByWickets(Integer.valueOf(data[MATCH_WIN_BY_WICKETS]));
+//                match.setPlayerOfMatch(data[MATCH_PLAYER_OF_MATCH]);
+//                match.setVenue(data[MATCH_VENUE]);
+//                match.setUmpire1(data[MATCH_UMPIRE1]);
+//                match.setUmpire2(data[MATCH_UMPIRE2]);
 //                match.setUmpire3(data[MATCH_UMPIRE3]);
                 matches.add(match);
-
             }
         }
         catch(FileNotFoundException e){
@@ -131,16 +129,15 @@ public class DaoConnector {
                 delivery.setBatsmanRun(Integer.valueOf(data[DELIVERY_BATSMAN_RUN]));
                 delivery.setExtraRun(Integer.valueOf(data[DELIVERY_EXTRA_RUN]));
                 delivery.setTotalRun(Integer.valueOf(data[DELIVERY_TOTAL_RUN]));
-                if(data.length > 18) {
-                    delivery.setPlayerDismissed(data[DELIVERY_PLAYER_DISMISSED]);
-                }
-                if (data.length > 19) {
-                    delivery.setDismissalKind(data[DELIVERY_DISMISSAL_KIND]);
-                }
-                if(data.length > 20){
-                    delivery.setFielder(data[DELIVERY_FIELDER]);
-                }
-//              System.out.println(data.length);
+//                if(data.length > 18) {
+//                    delivery.setPlayerDismissed(data[DELIVERY_PLAYER_DISMISSED]);
+//                }
+//                if (data.length > 19) {
+//                    delivery.setDismissalKind(data[DELIVERY_DISMISSAL_KIND]);
+//                }
+//                if(data.length > 20){
+//                    delivery.setFielder(data[DELIVERY_FIELDER]);
+//                }
 
                 deliveries.add(delivery);
             }

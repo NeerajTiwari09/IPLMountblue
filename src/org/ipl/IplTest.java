@@ -18,10 +18,10 @@ public class IplTest {
         List<Match> matches = dao.getMatchData();
         List<Delivery> deliveries = dao.getDeliveryData();
         MatchService matchesServices = new MatchService();
-//        Map<Integer, Integer> noOfMatches = matchesServices.getNumberOfMatchesPlayedPerYear(matches);
-//        System.out.println("Number of matches played per year: " + noOfMatches);
-//        Map<String, Integer> noOfWonMatches = matchesServices.getNumberOfMatchesWonOfAllTeamsOverAllYear(matches);
-//        System.out.println("Number of matches won of all teams over all the years: " + noOfWonMatches);
+        Map<Integer, Integer> noOfMatches = matchesServices.getNumberOfMatchesPlayedPerYear(matches);
+        System.out.println("Number of matches played per year: " + noOfMatches);
+        Map<String, Integer> noOfWonMatches = matchesServices.getNumberOfMatchesWonOfAllTeamsOverAllYear(matches);
+        System.out.println("Number of matches won of all teams over all the years: " + noOfWonMatches);
 //        Set<String> venueSet = matchesServices.getVenueOfAllMatchesInYear(matches, 2015);
 //        System.out.println("All venues of matches in 2015: " + venueSet);
 //        int playCount = matchesServices.getAllMatchesOfOneTeam(matches, 2017, "Sunrisers Hyderabad");
@@ -32,8 +32,8 @@ public class IplTest {
         System.out.println("For the year 2016 get the extra runs conceded per team: " + teamGotExtraRunMap);
         SortedSet<Map.Entry<String, Float>> topEconomicalBowler = deliveryService.getTheTopEconomicalBowlers(matches, deliveries, 2015);
         System.out.println("For the year 2015 get the top economical bowlers: " + topEconomicalBowler);
-//        SortedSet<Map.Entry<String, Float>> topStrikeRateBatsMan = deliveryService.getTheTopStrikeRateByBatsman(matches, deliveries, 2017);
-//        System.out.println("For the year 2015 get the top strike rate batsman: " + topStrikeRateBatsMan);
+        SortedSet<Map.Entry<String, Float>> topStrikeRateBatsMan = deliveryService.getTheTopStrikeRateByBatsman(matches, deliveries, 2017);
+        System.out.println("For the year 2015 get the top strike rate batsman: " + topStrikeRateBatsMan);
 
     }
 }
