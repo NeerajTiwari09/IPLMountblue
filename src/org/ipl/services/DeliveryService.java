@@ -7,7 +7,7 @@ import java.util.*;
 
 public class DeliveryService {
 
-    private List<Integer> getMatchId(List<Match> matches, int year) {
+    private List<Integer> getMatchIds(List<Match> matches, int year) {
         List<Integer> matchIds = new ArrayList<>();
         for (Match match : matches) {
             if (Integer.valueOf(match.getSeason()).equals(year)) {
@@ -17,8 +17,8 @@ public class DeliveryService {
         return matchIds;
     }
 
-    public Map<String, Integer> getExtraRunsConcededPerTeam(List<Match> matches, List<Delivery> deliveries, int year) {
-        List<Integer> matchIds = getMatchId(matches, year);
+    public Map<String, Integer> getExtraRunsConcededPerTeamByYear(List<Match> matches, List<Delivery> deliveries, int year) {
+        List<Integer> matchIds = getMatchIds(matches, year);
         Map<String, Integer> extraRunByTeam = new HashMap<>();
         for (Integer i : matchIds) {
             for (Delivery delivery : deliveries) {
@@ -36,45 +36,45 @@ public class DeliveryService {
     }
 
     public SortedSet<Map.Entry<String, Float>> getTheTopEconomicalBowlers(List<Match> matches, List<Delivery> deliveries, int year) {
-        List<Integer> matchIds = getMatchId(matches, year);
-        Map<String, Integer> ballsByBowler = new HashMap<>();
+        Map<String, Integer> ballsThrownByBowler = new HashMap<>();
         List<String> name = new ArrayList<>();
-        Map<String, Integer> runsByBowler = new HashMap<>();
-        //  TODO - needs optimization here
+        Map<String, Integer> runGivenByBowler = new HashMap<>();
+        List<Integer> matchIds = getMatchIds(matches, year);
         for (Integer i : matchIds) {
             for (Delivery delivery : deliveries) {
                 if (delivery.getMatchId().equals(i)) {
                     String bowlerName = delivery.getBowler();
-                    if (!runsByBowler.containsKey(bowlerName)) {
-                        runsByBowler.put(bowlerName, Integer.valueOf(delivery.getTotalRun()));
-                        ballsByBowler.put(bowlerName, 1);
+                    if (!runGivenByBowler.containsKey(bowlerName)) {
+                        runGivenByBowler.put(bowlerName, Integer.valueOf(delivery.getTotalRun()));
+                        ballsThrownByBowler.put(bowlerName, 1);
                         name.add(bowlerName);
                     } else {
-                        runsByBowler.put(bowlerName, runsByBowler.get(bowlerName) + delivery.getTotalRun());
-                        ballsByBowler.put(bowlerName, ballsByBowler.get(bowlerName)+1);
+                        runGivenByBowler.put(bowlerName, runGivenByBowler.get(bowlerName) + delivery.getTotalRun());
+                        ballsThrownByBowler.put(bowlerName, ballsThrownByBowler.get(bowlerName)+1);
                     }
                 }
             }
         }
-        return getTheTopEconomicalBowler(runsByBowler, ballsByBowler, name);
+        Map<String, Float> economyByBowler = getEconomicRateOfBowlers(runGivenByBowler, ballsThrownByBowler, name);
+        SortedSet<Map.Entry<String, Float>> sortedEconomicRateOfBowlers = sortEconomyRateByValues(economyByBowler);
+        return sortedEconomicRateOfBowlers;
     }
 
-    private SortedSet<Map.Entry<String, Float>>  getTheTopEconomicalBowler(Map<String, Integer> runsByBowler, Map<String, Integer> ballsByBowler, List<String> listOfBowlers){
+    private Map<String, Float> getEconomicRateOfBowlers(Map<String, Integer> runsByBowler, Map<String, Integer> ballsByBowler, List<String> listOfBowlers){
         Map<String, Float> economyByBowler = new TreeMap<>();
         // TODO- use merge() and apply (v1/v2)*6 (need to change ballsByBowler into Map<String, Float>);
        /* no need of another list ie List<String>
-        runsByBowler.forEach((key, value) -> ballsByBowler.merge(key, value, (v1, v2) -> ((v2 / v1))*6));
+        *runsByBowler.forEach((key, value) -> ballsByBowler.merge(key, value, (v1, v2) -> ((v2 / v1))*6));
         */
         for(String bName : listOfBowlers){
             float rate = ((float)runsByBowler.get(bName) / ballsByBowler.get(bName)) * 6;
             economyByBowler.put(bName, rate);
         }
-        SortedSet<Map.Entry<String, Float>> sortedEconomicByBowler = economyRateByValues(economyByBowler);
-        return sortedEconomicByBowler;
+        return economyByBowler;
     }
 
     static <K,V extends Comparable<? super V>>
-    SortedSet<Map.Entry<K,V>> economyRateByValues(Map<K,V> map) {
+    SortedSet<Map.Entry<K,V>> sortEconomyRateByValues(Map<K,V> map) {
         SortedSet<Map.Entry<K,V>> sortedEntries = new TreeSet<Map.Entry<K,V>>(
                 new Comparator<Map.Entry<K,V>>() {
                     @Override public int compare(Map.Entry<K,V> e1, Map.Entry<K,V> e2) {
@@ -87,24 +87,20 @@ public class DeliveryService {
         return sortedEntries;
     }
 
-
-    private SortedSet<Map.Entry<String, Float>> getStrikeRateByBatsman(Map<String, Integer> runByBatsman, Map<String, Integer> ballsByBatsman, List<String> listOfBatsman){
-        Map<String, Float> topStrikeRate = new TreeMap<>();
+    private Map<String, Float> getStrikeRateByBatsman(Map<String, Integer> runByBatsman, Map<String, Integer> ballsPlayedByBatsman, List<String> listOfBatsman){
+        Map<String, Float> strikeRateByBatsman = new TreeMap<>();
         for(String bowlerName : listOfBatsman){
-            float rate = ((float)runByBatsman.get(bowlerName) / ballsByBatsman.get(bowlerName)) * 100;
-            topStrikeRate.put(bowlerName, rate);
+            float rate = ((float)runByBatsman.get(bowlerName) / ballsPlayedByBatsman.get(bowlerName)) * 100;
+            strikeRateByBatsman.put(bowlerName, rate);
         }
-        SortedSet<Map.Entry<String, Float>> sortedTopBowler = entriesSortedByValues(topStrikeRate);
-
-        return sortedTopBowler;
+        return strikeRateByBatsman;
     }
 
     public SortedSet<Map.Entry<String, Float>> getTheTopStrikeRateByBatsman(List<Match> matches, List<Delivery> deliveries, int year) {
-        List<Integer> matchIds = getMatchId(matches, year);
+        List<Integer> matchIds = getMatchIds(matches, year);
         Map<String, Integer> ballsByBatsman = new HashMap<>();
         List<String> listOfBatsman = new ArrayList<>();
         Map<String, Integer> runByBatsman = new HashMap<>();
-        //  TODO - needs optimization here
         for (Integer i : matchIds) {
             for (Delivery delivery : deliveries) {
                 if (delivery.getMatchId().equals(i)) {
@@ -120,7 +116,9 @@ public class DeliveryService {
                 }
             }
         }
-        return getStrikeRateByBatsman(runByBatsman, ballsByBatsman, listOfBatsman);
+        Map<String, Float> strikeRateByBatsman = getStrikeRateByBatsman(runByBatsman, ballsByBatsman, listOfBatsman);
+        SortedSet<Map.Entry<String, Float>> sortedTopStrikeRateByBatsman = entriesSortedByValues(strikeRateByBatsman);
+        return sortedTopStrikeRateByBatsman;
     }
 
     static <K,V extends Comparable<? super V>>
@@ -136,5 +134,4 @@ public class DeliveryService {
         sortedEntries.addAll(map.entrySet());
         return sortedEntries;
     }
-
 }

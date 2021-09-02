@@ -6,7 +6,7 @@ import org.ipl.model.Match;
 import java.io.*;
 import java.util.*;
 
-public class DaoConnector {
+public class DaoClass {
 
     public static final int MATCH_ID = 0;
     public static final int MATCH_SEASON = 1;
@@ -49,21 +49,20 @@ public class DaoConnector {
     public static final int DELIVERY_DISMISSAL_KIND = 19;
     public static final int DELIVERY_FIELDER = 20;
 
-    private static DaoConnector dao;
+    private static DaoClass dao;
 
-    private DaoConnector(){
+    private DaoClass(){
 
     }
 
-    public static DaoConnector getInstance(){
+    public static DaoClass getInstance(){
         if(dao == null){
-            return new DaoConnector();
+            return new DaoClass();
         }
         return dao;
     }
 
-    public List<Match> getMatchData(){
-
+    public List<Match> getMatchesData(){
         List<Match> matches = new ArrayList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader("./csv-files/matches.csv"));
@@ -102,7 +101,7 @@ public class DaoConnector {
         return matches;
     }
 
-    public synchronized List<Delivery> getDeliveryData(){
+    public synchronized List<Delivery> getDeliveriesData(){
         List<Delivery> deliveries = new ArrayList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader("./csv-files/deliveries.csv"));
@@ -123,8 +122,8 @@ public class DaoConnector {
                 delivery.setIsSuperOver(Integer.valueOf(data[DELIVERY_IS_SUPER_OVER]));
                 delivery.setWideRun(Integer.valueOf(data[DELIVERY_WIDE_RUN]));
                 delivery.setByeRun(Integer.valueOf(data[DELIVERY_BYE_RUN]));
-                delivery.setLegbyeRun(Integer.valueOf(data[DELIVERY_LEGBYE_RUNS]));
-                delivery.setNoballRun(Integer.valueOf(data[DELIVERY_NO_BALL_RUN]));
+                delivery.setLegByeRun(Integer.valueOf(data[DELIVERY_LEGBYE_RUNS]));
+                delivery.setNoBallRun(Integer.valueOf(data[DELIVERY_NO_BALL_RUN]));
                 delivery.setPenaltyRun(Integer.valueOf(data[DELIVERY_PENALTY_RUN]));
                 delivery.setBatsmanRun(Integer.valueOf(data[DELIVERY_BATSMAN_RUN]));
                 delivery.setExtraRun(Integer.valueOf(data[DELIVERY_EXTRA_RUN]));

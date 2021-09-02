@@ -13,8 +13,8 @@ public class Delivery {
     private Integer isSuperOver;
     private Integer wideRun;
     private Integer byeRun;
-    private Integer legbyeRun;
-    private Integer noballRun;
+    private Integer legByeRun;
+    private Integer noBallRun;
     private Integer penaltyRun;
     private Integer batsmanRun;
     private Integer extraRun;
@@ -119,20 +119,20 @@ public class Delivery {
         this.byeRun = byeRun;
     }
 
-    public Integer getLegbyeRun() {
-        return legbyeRun;
+    public Integer getLegByeRun() {
+        return legByeRun;
     }
 
-    public void setLegbyeRun(Integer legbyeRun) {
-        this.legbyeRun = legbyeRun;
+    public void setLegByeRun(Integer legByeRun) {
+        this.legByeRun = legByeRun;
     }
 
-    public Integer getNoballRun() {
-        return noballRun;
+    public Integer getNoBallRun() {
+        return noBallRun;
     }
 
-    public void setNoballRun(Integer noballRun) {
-        this.noballRun = noballRun;
+    public void setNoBallRun(Integer noBallRun) {
+        this.noBallRun = noBallRun;
     }
 
     public Integer getPenaltyRun() {
