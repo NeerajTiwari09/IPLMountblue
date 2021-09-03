@@ -3,77 +3,95 @@ package org.ipl;
 import org.ipl.model.Delivery;
 import org.ipl.model.Match;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+
+import java.sql.*;
 import java.util.*;
 
 public class Main {
 
-    public static final int MATCH_ID = 0;
-    public static final int MATCH_SEASON = 1;
-    public static final int MATCH_CITY = 2;
-    public static final int MATCH_DATE = 3;
-    public static final int MATCH_TEAM1 = 4;
-    public static final int MATCH_TEAM2 = 5;
-    public static final int MATCH_TOSS_WINNER = 6;
-    public static final int MATCH_TOSS_DECISION = 7;
-    public static final int MATCH_RESULT = 8;
-    public static final int MATCH_DL_APPLIED = 9;
-    public static final int MATCH_WINNER = 10;
-    public static final int MATCH_WIN_BY_RUNS = 11;
-    public static final int MATCH_WIN_BY_WICKETS = 12;
-    public static final int MATCH_PLAYER_OF_MATCH = 13;
-    public static final int MATCH_VENUE = 14;
-    public static final int MATCH_UMPIRE1 = 15;
-    public static final int MATCH_UMPIRE2 = 16;
-    public static final int MATCH_UMPIRE3 = 17;
+    public static final int MATCH_ID = 1;
+    public static final int MATCH_SEASON = 2;
+    public static final int MATCH_CITY = 3;
+    public static final int MATCH_DATE = 4;
+    public static final int MATCH_TEAM1 = 5;
+    public static final int MATCH_TEAM2 = 6;
+    public static final int MATCH_TOSS_WINNER = 7;
+    public static final int MATCH_TOSS_DECISION = 8;
+    public static final int MATCH_RESULT = 9;
+    public static final int MATCH_DL_APPLIED = 10;
+    public static final int MATCH_WINNER = 11;
+    public static final int MATCH_WIN_BY_RUNS = 12;
+    public static final int MATCH_WIN_BY_WICKETS = 13;
+    public static final int MATCH_PLAYER_OF_MATCH = 14;
+    public static final int MATCH_VENUE = 15;
+    public static final int MATCH_UMPIRE1 = 16;
+    public static final int MATCH_UMPIRE2 = 17;
+    public static final int MATCH_UMPIRE3 = 18;
 
-    public static final int DELIVERY_MATCH_ID = 0;
-    public static final int DELIVERY_INNING = 1;
-    public static final int DELIVERY_BATTING_TEAM = 2;
-    public static final int DELIVERY_BOWLING_TEAM = 3;
-    public static final int DELIVERY_OVER = 4;
-    public static final int DELIVERY_BALL = 5;
-    public static final int DELIVERY_BATSMAN = 6;
-    public static final int DELIVERY_NON_STRIKER = 7;
-    public static final int DELIVERY_BOWLER = 8;
-    public static final int DELIVERY_IS_SUPER_OVER = 9;
-    public static final int DELIVERY_WIDE_RUN = 10;
-    public static final int DELIVERY_BYE_RUN = 11;
-    public static final int DELIVERY_LEGBYE_RUNS = 12;
-    public static final int DELIVERY_NO_BALL_RUN = 13;
-    public static final int DELIVERY_PENALTY_RUN = 14;
-    public static final int DELIVERY_BATSMAN_RUN = 15;
-    public static final int DELIVERY_EXTRA_RUN = 16;
-    public static final int DELIVERY_TOTAL_RUN = 17;
-    public static final int DELIVERY_PLAYER_DISMISSED = 18;
-    public static final int DELIVERY_DISMISSAL_KIND = 19;
-    public static final int DELIVERY_FIELDER = 20;
+    public static final int DELIVERY_MATCH_ID = 1;
+    public static final int DELIVERY_INNING = 2;
+    public static final int DELIVERY_BATTING_TEAM = 3;
+    public static final int DELIVERY_BOWLING_TEAM = 4;
+    public static final int DELIVERY_OVER = 5;
+    public static final int DELIVERY_BALL = 6;
+    public static final int DELIVERY_BATSMAN = 7;
+    public static final int DELIVERY_NON_STRIKER = 8;
+    public static final int DELIVERY_BOWLER = 9;
+    public static final int DELIVERY_IS_SUPER_OVER = 10;
+    public static final int DELIVERY_WIDE_RUN = 11;
+    public static final int DELIVERY_BYE_RUN = 12;
+    public static final int DELIVERY_LEGBYE_RUNS = 13;
+    public static final int DELIVERY_NO_BALL_RUN = 14;
+    public static final int DELIVERY_PENALTY_RUN = 15;
+    public static final int DELIVERY_BATSMAN_RUN = 16;
+    public static final int DELIVERY_EXTRA_RUN = 17;
+    public static final int DELIVERY_TOTAL_RUN = 18;
+    public static final int DELIVERY_PLAYER_DISMISSED = 19;
+    public static final int DELIVERY_DISMISSAL_KIND = 20;
+    public static final int DELIVERY_FIELDER = 21;
+
+    private Connection connection;
+    private  Statement statement;
+
+    public Connection getConnectionInstance() {
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/IPL", "root", "root8080");
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return connection;
+    }
 
     public List<Match> getMatchesData() {
         List<Match> matches = new ArrayList<>();
         try {
-            BufferedReader br = new BufferedReader(new FileReader("./csv-files/matches.csv"));
-            String heading = br.readLine();
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(",");
+//            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM matches");
+            while (resultSet.next()) {
                 Match match = new Match();
-                match.setMatchId(Integer.valueOf(data[MATCH_ID]));
-                match.setSeason(data[MATCH_SEASON]);
-                match.setCity(data[MATCH_CITY]);
-                match.setDate(data[MATCH_DATE]);
-                match.setTeam1(data[MATCH_TEAM1]);
-                match.setTeam2(data[MATCH_TEAM2]);
-                match.setTossWinner(data[MATCH_TOSS_WINNER]);
-                match.setTossDecision(data[MATCH_TOSS_DECISION]);
-                match.setResult(data[MATCH_RESULT]);
-                match.setDlApplied(Integer.valueOf(data[MATCH_DL_APPLIED]));
-                match.setWinner(data[MATCH_WINNER]);
+                match.setMatchId(resultSet.getInt(MATCH_ID));
+                match.setSeason(resultSet.getString(MATCH_SEASON));
+                match.setCity(resultSet.getString(MATCH_CITY));
+                match.setDate(resultSet.getString(MATCH_DATE));
+                match.setTeam1(resultSet.getString(MATCH_TEAM1));
+                match.setTeam2(resultSet.getString(MATCH_TEAM2));
+                match.setTossWinner(resultSet.getString(MATCH_TOSS_WINNER));
+                match.setTossDecision(resultSet.getString(MATCH_TOSS_DECISION));
+                match.setResult(resultSet.getString(MATCH_RESULT));
+                match.setDlApplied(resultSet.getInt(MATCH_DL_APPLIED));
+                match.setWinner(resultSet.getString(MATCH_WINNER));
+                match.setWinByRuns(resultSet.getInt(MATCH_WIN_BY_RUNS));
+                match.setWinByWickets(resultSet.getInt(MATCH_WIN_BY_WICKETS));
+                match.setPlayerOfMatch(resultSet.getString(MATCH_PLAYER_OF_MATCH));
+                match.setVenue(resultSet.getString(MATCH_VENUE));
+                match.setUmpire1(resultSet.getString(MATCH_UMPIRE1));
+                match.setUmpire2(resultSet.getString(MATCH_UMPIRE2));
+                match.setUmpire3(resultSet.getString(MATCH_UMPIRE3));
                 matches.add(match);
             }
-        } catch (IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return matches;
@@ -82,33 +100,34 @@ public class Main {
     public synchronized List<Delivery> getDeliveriesData() {
         List<Delivery> deliveries = new ArrayList<>();
         try {
-            BufferedReader br = new BufferedReader(new FileReader("./csv-files/deliveries.csv"));
-            String heading = br.readLine();
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(",");
+//            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM deliveries");
+            while (resultSet.next()) {
                 Delivery delivery = new Delivery();
-                delivery.setMatchId(Integer.valueOf(data[DELIVERY_MATCH_ID]));
-                delivery.setInning(Integer.valueOf(data[DELIVERY_INNING]));
-                delivery.setBattingTeam(data[DELIVERY_BATTING_TEAM]);
-                delivery.setBowlingTeam(data[DELIVERY_BOWLING_TEAM]);
-                delivery.setOver(Integer.valueOf(data[DELIVERY_OVER]));
-                delivery.setBall(Integer.valueOf(data[DELIVERY_BALL]));
-                delivery.setBatsman(data[DELIVERY_BATSMAN]);
-                delivery.setNonStriker(data[DELIVERY_NON_STRIKER]);
-                delivery.setBowler(data[DELIVERY_BOWLER]);
-                delivery.setIsSuperOver(Integer.valueOf(data[DELIVERY_IS_SUPER_OVER]));
-                delivery.setWideRun(Integer.valueOf(data[DELIVERY_WIDE_RUN]));
-                delivery.setByeRun(Integer.valueOf(data[DELIVERY_BYE_RUN]));
-                delivery.setLegByeRun(Integer.valueOf(data[DELIVERY_LEGBYE_RUNS]));
-                delivery.setNoBallRun(Integer.valueOf(data[DELIVERY_NO_BALL_RUN]));
-                delivery.setPenaltyRun(Integer.valueOf(data[DELIVERY_PENALTY_RUN]));
-                delivery.setBatsmanRun(Integer.valueOf(data[DELIVERY_BATSMAN_RUN]));
-                delivery.setExtraRun(Integer.valueOf(data[DELIVERY_EXTRA_RUN]));
-                delivery.setTotalRun(Integer.valueOf(data[DELIVERY_TOTAL_RUN]));
+                delivery.setMatchId(resultSet.getInt(DELIVERY_MATCH_ID));
+                delivery.setInning(resultSet.getInt(DELIVERY_INNING));
+                delivery.setBattingTeam(resultSet.getString(DELIVERY_BATTING_TEAM));
+                delivery.setBowlingTeam(resultSet.getString(DELIVERY_BOWLING_TEAM));
+                delivery.setOver(resultSet.getInt(DELIVERY_OVER));
+                delivery.setBall(resultSet.getInt(DELIVERY_BALL));
+                delivery.setBatsman(resultSet.getString(DELIVERY_BATSMAN));
+                delivery.setNonStriker(resultSet.getString(DELIVERY_NON_STRIKER));
+                delivery.setBowler(resultSet.getString(DELIVERY_BOWLER));
+                delivery.setIsSuperOver(resultSet.getInt(DELIVERY_IS_SUPER_OVER));
+                delivery.setWideRun(resultSet.getInt(DELIVERY_WIDE_RUN));
+                delivery.setByeRun(resultSet.getInt(DELIVERY_BYE_RUN));
+                delivery.setLegByeRun(resultSet.getInt(DELIVERY_LEGBYE_RUNS));
+                delivery.setNoBallRun(resultSet.getInt(DELIVERY_NO_BALL_RUN));
+                delivery.setPenaltyRun(resultSet.getInt(DELIVERY_PENALTY_RUN));
+                delivery.setBatsmanRun(resultSet.getInt(DELIVERY_BATSMAN_RUN));
+                delivery.setExtraRun(resultSet.getInt(DELIVERY_EXTRA_RUN));
+                delivery.setTotalRun(resultSet.getInt(DELIVERY_TOTAL_RUN));
+                delivery.setPlayerDismissed(resultSet.getString(DELIVERY_PLAYER_DISMISSED));
+                delivery.setDismissalKind(resultSet.getString(DELIVERY_DISMISSAL_KIND));
+                delivery.setFielder(resultSet.getString(DELIVERY_FIELDER));
                 deliveries.add(delivery);
             }
-        } catch (IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return deliveries;
@@ -232,6 +251,8 @@ public class Main {
 
     public static void main(String[] args) {
         Main main = new Main();
+        Connection con = main.getConnectionInstance();
+        System.out.println(con);
 
         List<Match> matches = main.getMatchesData();
         List<Delivery> deliveries = main.getDeliveriesData();
@@ -242,11 +263,12 @@ public class Main {
         System.out.println("Number of matches won of all teams over all year: " + noOfWonMatches);
         int playCount = main.getAllMatchesOfOneTeam(matches, 2017, "Sunrisers Hyderabad");
         System.out.println("For the year matches played by team: " + playCount);
+        Set<String> venues = main.getVenueOfAllMatchesInYear(matches, 2015);
+        System.out.println("Name of venues in year: " + venues);
 
         Map<String, Integer> extraRunGotByTeam = main.getExtraRunsConcededPerTeamByYear(matches, deliveries, 2016);
         System.out.println("For the year 2016 get the extra runs conceded per team: " + extraRunGotByTeam);
         SortedSet<Map.Entry<String, Float>> topEconomyByBowler = main.getTheTopEconomicalBowlers(matches, deliveries, 2015);
         System.out.println("For the year 2015 get the top economical bowlers: " + topEconomyByBowler);
-
     }
 }

@@ -2,18 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="578c7a3e-1496-48de-af14-5b2529fa216f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/org/ipl/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/IplTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/dao/DaoClass.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/services/DeliveryService$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/services/DeliveryService$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/services/DeliveryService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/services/MatchService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/ipl/IplTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/ipl/dao/DaoClass.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/ipl/services/DeliveryService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/ipl/services/MatchService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IPL Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/IPL Project.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/ipl/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/ipl/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +40,10 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/mysql-connector-java-8.0.24.jar" />
+    <property name="project.structure.last.edited" value="Global Libraries" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunManager" selected="Application.Main">
