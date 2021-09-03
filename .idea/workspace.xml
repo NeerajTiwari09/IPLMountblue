@@ -2,15 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="578c7a3e-1496-48de-af14-5b2529fa216f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/org/ipl/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/IplTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/IplTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/dao/DaoConnector.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/model/Delivery.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/model/Delivery.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/services/DeliveryService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/services/DeliveryService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/ipl/IplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/ipl/IplTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/ipl/dao/DaoConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/ipl/dao/DaoClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/ipl/model/Delivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/ipl/model/Delivery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/ipl/services/DeliveryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/ipl/services/DeliveryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/IplTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/dao/DaoClass.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/services/DeliveryService$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/services/DeliveryService$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/services/DeliveryService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/IPL Project/org/ipl/services/MatchService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/ipl/IplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/ipl/dao/DaoClass.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/ipl/services/DeliveryService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/ipl/services/MatchService.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +50,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
-  <component name="RunManager" selected="Application.IplTest">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="DaoClass" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.ipl.dao.DaoClass" />
       <module name="IPL Project" />
@@ -61,8 +64,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="IplTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.ipl.IplTest" />
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.ipl.Main" />
       <module name="IPL Project" />
       <extension name="coverage">
         <pattern>
@@ -76,7 +79,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.IplTest" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.DaoClass" />
       </list>
     </recent_temporary>
